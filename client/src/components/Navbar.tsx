@@ -23,7 +23,7 @@ const Navbar = () => {
           <span className="text-3xl tracking-tighter">Energry.</span>
         </Link>
 
-        <div className="absolute right-72 flex gap-2 items-center">
+        <div className="absolute right-64 flex gap-2 items-center">
           <Link
             to="/dang-nhap"
             className={buttonVariants({

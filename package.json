@@ -13,6 +13,7 @@
     "@types/morgan": "^1.9.9",
     "@types/ms": "^2.1.0",
     "@types/node": "^22.15.16",
+    "@types/slug": "^5.0.9",
     "tsx": "^4.19.4"
   },
   "peerDependencies": {
@@ -26,6 +27,7 @@
     "express": "^5.1.0",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.14.1",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "slug": "^10.0.0"
   }
 }

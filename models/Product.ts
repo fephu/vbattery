@@ -7,6 +7,10 @@ const productSchema = new Schema({
     type: String,
     required: [true, "Tên sản phẩm là bắt buộc"],
   },
+  slug: {
+    type: String,
+    required: [true, "Slug là bắt buộc"],
+  },
   ma_san_pham: {
     type: String,
     required: [true, "Mã sản phẩm là bắt buộc"],

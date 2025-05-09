@@ -1,9 +1,14 @@
 import express from "express";
-import { createProduct, getAllProducts } from "../controllers/product";
+import {
+  createProduct,
+  getAllProducts,
+  getProductBySlug,
+} from "../controllers/product";
 
 const router = express();
 
 router.get("/", getAllProducts);
-router.get("/create", createProduct);
+router.get("/:slug", getProductBySlug);
+router.post("/create", createProduct);
 
 export const productRouter = router;
