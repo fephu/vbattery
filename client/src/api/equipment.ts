@@ -1,9 +1,9 @@
-import type { Product } from "@/types";
+import type { Equipment } from "@/types";
 import axiosInstance from "./axios";
 
-export const fetchAllProducts = async (): Promise<Product[]> => {
+export const fetchAllEquipments = async (): Promise<Equipment[]> => {
   return axiosInstance
-    .get("/products")
+    .get("/equipments")
     .then((response) => response.data.data)
     .catch((error) => {
       throw error;

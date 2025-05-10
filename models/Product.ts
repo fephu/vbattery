@@ -44,6 +44,12 @@ const productSchema = new Schema({
     required: [true, "Giá sản phầm là bắt buộc"],
   },
   hinh_anh: [{ type: String }],
+  thiet_bi_su_dung: [
+    {
+      type: mongoose.Schema.ObjectId,
+      ref: "Equipment",
+    },
+  ],
 });
 
 export const Product = mongoose.model("Product", productSchema);

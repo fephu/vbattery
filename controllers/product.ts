@@ -20,6 +20,7 @@ export const createProduct = asyncHandler(async (req, res, next) => {
     xuat_xu,
     gia_san_pham,
     hinh_anh,
+    thiet_bi_su_dung,
   } = req.body;
 
   const sluggedName = slugName(ten_san_pham);
@@ -36,6 +37,7 @@ export const createProduct = asyncHandler(async (req, res, next) => {
     slug: sluggedName,
     trong_luong,
     xuat_xu,
+    thiet_bi_su_dung,
   });
 
   res.status(200).json({ success: true, data: product });

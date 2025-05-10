@@ -2,6 +2,7 @@ import { Link } from "react-router";
 import CategoryBar from "./CategoryBar";
 import SheetCart from "./products/SheetCart";
 import { buttonVariants } from "./ui/button";
+import logoImg from "@/assets/logo.jpg";
 
 const categories = [
   { name: "Trang chủ", value: "/" },
@@ -15,12 +16,9 @@ const categories = [
 const Navbar = () => {
   return (
     <div>
-      <div className="flex items-center justify-center py-2 border-b border-zinc-200">
+      <div className="flex items-center justify-center h-[8rem]">
         <Link to="/" className="flex flex-col items-end">
-          <span className="text-5xl tracking-tighter text-red-700">
-            VBattery
-          </span>
-          <span className="text-3xl tracking-tighter">Energry.</span>
+          <img src={logoImg} alt="logo img" className="w-[12rem] z-auto" />
         </Link>
 
         <div className="absolute right-64 flex gap-2 items-center">

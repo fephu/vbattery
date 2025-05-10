@@ -6,6 +6,8 @@ import cors from "cors";
 import morgan from "morgan";
 import { errorHandler } from "./middlewares/error";
 import { authRouter } from "./routes/auth";
+import { equipmentRouter } from "./routes/equipment";
+import cookieParser from "cookie-parser";
 
 dotenv.config({ path: "./config/config.env" });
 
@@ -13,21 +15,25 @@ connectToDB();
 
 const app = express();
 
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
+app.disable("etag");
 app.use(express.json());
+app.use(cookieParser());
 
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
 
-app.use(
-  cors({
-    methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true,
-  })
-);
-
 app.use("/api/v1/user", authRouter);
 app.use("/api/v1/products", productRouter);
+app.use("/api/v1/equipments", equipmentRouter);
 
 app.use(errorHandler);
 
