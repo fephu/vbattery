@@ -1,9 +1,11 @@
-import type { Product } from "@/types";
+import type { PaginateProductType, Product } from "@/types";
 import axiosInstance from "./axios";
 
-export const fetchAllProducts = async (): Promise<Product[]> => {
+export const fetchAllProducts = async (
+  page: number
+): Promise<PaginateProductType> => {
   return axiosInstance
-    .get("/products")
+    .get(`/products?page_id=${page}`)
     .then((response) => response.data.data)
     .catch((error) => {
       throw error;

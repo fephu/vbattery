@@ -44,6 +44,10 @@ const productSchema = new Schema({
     required: [true, "Giá sản phầm là bắt buộc"],
   },
   hinh_anh: [{ type: String }],
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
   thiet_bi_su_dung: [
     {
       type: mongoose.Schema.ObjectId,

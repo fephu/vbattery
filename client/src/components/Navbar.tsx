@@ -1,13 +1,11 @@
 import { Link } from "react-router";
 import CategoryBar from "./CategoryBar";
 import SheetCart from "./products/SheetCart";
-import { buttonVariants } from "./ui/button";
 import logoImg from "@/assets/logo.jpg";
+import MaxWidthWrapper from "./MaxWidthWrapper";
 
 const categories = [
-  { name: "Trang chủ", value: "/" },
-  { name: "Sản phẩm", value: "/san-pham" },
-  { name: "Tin tức", value: "/tin-tuc" },
+  { name: "Sản phẩm", value: "/san-pham?page=1" },
   { name: "Dịch vụ", value: "/dich-vu" },
   { name: "Giới thiệu", value: "/gioi-thieu" },
   { name: "Liên hệ", value: "/lien-he" },
@@ -15,26 +13,17 @@ const categories = [
 
 const Navbar = () => {
   return (
-    <div>
-      <div className="flex items-center justify-center h-[8rem]">
-        <Link to="/" className="flex flex-col items-end">
-          <img src={logoImg} alt="logo img" className="w-[12rem] z-auto" />
-        </Link>
-
-        <div className="absolute right-64 flex gap-2 items-center">
-          <Link
-            to="/dang-nhap"
-            className={buttonVariants({
-              variant: "ghost",
-              className: "rounded-none tracking-tighter",
-            })}
-          >
-            Đăng nhập
+    <div className="fixed top-0 inset-x-0 bg-white border-b border-zinc-200 transition-all z-50">
+      <MaxWidthWrapper className="flex items-center justify-between">
+        <div className="flex items-center gap-4">
+          <Link to="/" className="flex flex-col items-end">
+            <img src={logoImg} alt="logo img" className="w-[5rem] z-auto" />
           </Link>
-          <SheetCart />
+          <CategoryBar categories={categories} />
         </div>
-      </div>
-      <CategoryBar categories={categories} />
+
+        <SheetCart />
+      </MaxWidthWrapper>
     </div>
   );
 };

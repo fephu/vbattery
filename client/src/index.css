@@ -4,7 +4,7 @@
 @custom-variant dark (&:is(.dark *));
 
 @theme {
-  --font-display: "Noto Sans", sans-serif;
+  --font-display: "Inter", sans-serif;
 }
 
 @theme inline {

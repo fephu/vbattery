@@ -7,48 +7,36 @@ import {
   CarouselPrevious,
 } from "./ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-
-import banner1 from "@/assets/carousel-img/1.jpg";
-import banner2 from "@/assets/carousel-img/2.jpg";
-import banner3 from "@/assets/carousel-img/3.jpg";
-import banner4 from "@/assets/carousel-img/4.jpg";
+import { useQuery } from "@tanstack/react-query";
+import type { Banner } from "@/types";
+import { fetchAllBanners } from "@/api/banner";
+import { Loader2 } from "lucide-react";
 
 const CarouselBanner = () => {
   const plugin = useRef(Autoplay({ delay: 3000 }));
 
+  const { data, isLoading } = useQuery<Banner[], Error>({
+    queryKey: ["banners"],
+    queryFn: fetchAllBanners,
+  });
+
+  if (isLoading) {
+    return <Loader2 className="animate-spin" />;
+  }
+
   return (
-    <Carousel plugins={[plugin.current]} className="shadow">
-      <CarouselContent className="h-[30rem]">
-        <CarouselItem>
-          <img
-            src={banner1}
-            alt="Background home"
-            className="object-cover w-full h-full object-center"
-          />
-        </CarouselItem>
-        <CarouselItem>
-          <img
-            src={banner2}
-            alt="Background home"
-            className="object-cover w-full h-full object-center"
-          />
-        </CarouselItem>
-
-        <CarouselItem>
-          <img
-            src={banner3}
-            alt="Background home"
-            className="object-cover w-full h-full object-center"
-          />
-        </CarouselItem>
-
-        <CarouselItem>
-          <img
-            src={banner4}
-            alt="Background home"
-            className="object-cover w-full h-full object-center"
-          />
-        </CarouselItem>
+    <Carousel plugins={[plugin.current]} className="shadow-sm">
+      <CarouselContent className="h-[30rem] border">
+        {data &&
+          data.map((banner) => (
+            <CarouselItem key={banner.position}>
+              <img
+                src={banner.image_url}
+                alt="Background home"
+                className="object-cover w-full h-full object-center"
+              />
+            </CarouselItem>
+          ))}
       </CarouselContent>
       <CarouselPrevious variant={"ghost"} />
       <CarouselNext variant={"ghost"} />

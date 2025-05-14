@@ -11,6 +11,10 @@ const equipmentSchema = new Schema({
     type: String,
     required: [true, "Slug là bắt buộc"],
   },
+  createdAt: {
+    type: Date,
+    default: Date.now,
+  },
 });
 
 export const Equipment = mongoose.model("Equipment", equipmentSchema);

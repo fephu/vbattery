@@ -9,7 +9,8 @@ const SheetCart = () => {
       <SheetTrigger
         className={buttonVariants({
           variant: "outline",
-          className: "text-sm tracking-tighter rounded-none cursor-pointer",
+          size: "lg",
+          className: "tracking-tight cursor-pointer",
         })}
       >
         <ShoppingBag />0 Sản phẩm
@@ -18,7 +19,7 @@ const SheetCart = () => {
         <div className="flex flex-col items-center justify-center py-10 w-full h-full gap-4">
           <span className="text-2xl">Giỏ hàng trống.</span>
 
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-4">
             <Link
               to={"/gio-hang"}
               className={buttonVariants({

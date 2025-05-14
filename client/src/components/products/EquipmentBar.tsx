@@ -3,21 +3,20 @@ import type { Equipment } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { Loader2 } from "lucide-react";
 import { Link } from "react-router";
-import { buttonVariants } from "../ui/button";
 
 const EquipmentBar = () => {
-  const { data, error, isLoading, isError } = useQuery<Equipment[], Error>({
+  const { data, isLoading } = useQuery<Equipment[], Error>({
     queryKey: ["equipments"],
     queryFn: fetchAllEquipments,
   });
 
   if (isLoading) {
-    return <Loader2 className="animate-spins" />;
+    return <Loader2 className="animate-spin" />;
   }
 
   return (
-    <div className="shadow flex flex-col">
-      <div className="bg-green-900 px-4 py-2 text-white">
+    <div className="shadow flex flex-col mt-8">
+      <div className="bg-green-950 px-4 py-3 text-white">
         <span className="text-base tracking-tight">Thiết bị sử dụng</span>
       </div>
       {data &&

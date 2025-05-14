@@ -6,7 +6,7 @@ interface CategoryBarProps {
 
 const CategoryBar = ({ categories }: CategoryBarProps) => {
   return (
-    <div className="hidden md:flex items-center justify-center gap-8 border-b-2 border-green-950">
+    <div className="hidden md:flex items-center justify-center gap-4">
       {categories &&
         categories.map((category) => (
           <NavLink
@@ -14,8 +14,8 @@ const CategoryBar = ({ categories }: CategoryBarProps) => {
             to={`${category.value}`}
             className={({ isActive }) =>
               isActive
-                ? "text-white bg-green-950 p-4"
-                : "text-black p-4 hover:bg-accent hover:text-accent-foreground"
+                ? "bg-accent px-4 py-2 rounded-sm"
+                : "px-4 py-2 hover:bg-accent hover:text-accent-foreground rounded-sm"
             }
           >
             {category.name}

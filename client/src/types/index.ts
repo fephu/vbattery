@@ -16,3 +16,17 @@ export interface Product {
   hinh_anh: string[];
   thiet_bi_su_dung: string[];
 }
+
+export type PaginateProductType = {
+  products: Product[];
+  page_id: number;
+  total_product: number;
+  total_pages: number;
+};
+
+export interface Banner {
+  image_url: string;
+  link_url: string;
+  title: string;
+  position: number;
+}

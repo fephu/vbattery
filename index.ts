@@ -8,6 +8,7 @@ import { errorHandler } from "./middlewares/error";
 import { authRouter } from "./routes/auth";
 import { equipmentRouter } from "./routes/equipment";
 import cookieParser from "cookie-parser";
+import { bannerRouter } from "./routes/banner";
 
 dotenv.config({ path: "./config/config.env" });
 
@@ -34,6 +35,7 @@ if (process.env.NODE_ENV === "development") {
 app.use("/api/v1/user", authRouter);
 app.use("/api/v1/products", productRouter);
 app.use("/api/v1/equipments", equipmentRouter);
+app.use("/api/v1/banners", bannerRouter);
 
 app.use(errorHandler);
 
