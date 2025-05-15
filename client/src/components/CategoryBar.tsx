@@ -17,6 +17,7 @@ const CategoryBar = ({ categories }: CategoryBarProps) => {
                 ? "bg-accent px-4 py-2 rounded-sm"
                 : "px-4 py-2 hover:bg-accent hover:text-accent-foreground rounded-sm"
             }
+            reloadDocument
           >
             {category.name}
           </NavLink>

@@ -6,7 +6,7 @@ import MaxWidthWrapper from "./MaxWidthWrapper";
 
 const categories = [
   { name: "Sản phẩm", value: "/san-pham?page=1" },
-  { name: "Dịch vụ", value: "/dich-vu" },
+  // { name: "Dịch vụ", value: "/dich-vu" },
   { name: "Giới thiệu", value: "/gioi-thieu" },
   { name: "Liên hệ", value: "/lien-he" },
 ];

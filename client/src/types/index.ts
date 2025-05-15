@@ -4,7 +4,9 @@ export interface Equipment {
 }
 
 export interface Product {
+  _id: string;
   ten_san_pham: string;
+  slug: string;
   ma_san_pham: string;
   diep_ap: string;
   dung_luong: string;
@@ -14,7 +16,7 @@ export interface Product {
   xuat_xu: string;
   gia_san_pham: number;
   hinh_anh: string[];
-  thiet_bi_su_dung: string[];
+  thiet_bi_su_dung: Equipment[];
 }
 
 export type PaginateProductType = {

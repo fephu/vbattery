@@ -1,4 +1,5 @@
 import { asyncHandler } from "../middlewares/async";
+import { Equipment } from "../models/Equipment";
 import { Product } from "../models/Product";
 import { ErrorResponse } from "../utils/errorResponse";
 import { slugName } from "../utils/slug";
@@ -6,12 +7,30 @@ import { slugName } from "../utils/slug";
 export const getAllProducts = asyncHandler(async (req, res, next) => {
   const page_size = parseInt(req.query.page_size as string) || 6;
   let page = parseInt(req.query.page_id as string) || 1;
+  const equip = req.query.equip;
+
+  console.log(equip);
+
+  let query = Product.find({})
+    .skip(page_size * page - page_size)
+    .limit(page_size);
 
   const total = await Product.find({}).countDocuments();
 
-  const products = await Product.find({})
-    .skip(page_size * page - page_size)
-    .limit(page_size);
+  if (equip) {
+    const equipment = await Equipment.findOne({ slug: equip });
+
+    if (!equipment) {
+      return next(new ErrorResponse(`No equipment`, 404));
+    }
+
+    query = query
+      .where("thiet_bi_su_dung")
+      .equals(equipment._id)
+      .populate("thiet_bi_su_dung");
+  }
+
+  const products = await query.exec();
 
   res.status(200).json({
     success: true,
@@ -62,7 +81,7 @@ export const createProduct = asyncHandler(async (req, res, next) => {
 export const getProductBySlug = asyncHandler(async (req, res, next) => {
   const slug = req.params.slug;
 
-  const product = await Product.find({
+  const product = await Product.findOne({
     slug,
   });
 
@@ -71,7 +90,6 @@ export const getProductBySlug = asyncHandler(async (req, res, next) => {
   }
 
   res.status(200).json({
-    success: true,
-    data: product,
+    product,
   });
 });
