@@ -1,8 +1,8 @@
 import { getProduct } from "@/api/product";
-import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import Counter from "@/components/products/Counter";
 import { Button } from "@/components/ui/button";
-import { useCart } from "@/hooks/useCart";
+import { useCart } from "@/hooks/use-cart";
+import PublicLayout from "@/layouts/PublicLayout";
 import type { Product } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 import { IoIosAdd } from "react-icons/io";
@@ -33,7 +33,7 @@ const ProductDetail = () => {
   };
 
   return (
-    <MaxWidthWrapper className="py-20 h-screen">
+    <PublicLayout>
       {data ? (
         <div className="mx-auto flex max-w-screen pt-6 gap-6">
           <div className="w-1/3 border text-center px-10 rounded-sm">
@@ -80,7 +80,7 @@ const ProductDetail = () => {
       ) : (
         <div>San pham khong ton tai</div>
       )}
-    </MaxWidthWrapper>
+    </PublicLayout>
   );
 };
 

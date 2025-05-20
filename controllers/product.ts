@@ -9,8 +9,6 @@ export const getAllProducts = asyncHandler(async (req, res, next) => {
   let page = parseInt(req.query.page_id as string) || 1;
   const equip = req.query.equip;
 
-  console.log(equip);
-
   let query = Product.find({})
     .skip(page_size * page - page_size)
     .limit(page_size);

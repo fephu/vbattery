@@ -5,6 +5,7 @@ const axiosInstance = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
+  withCredentials: true,
 });
 
 axiosInstance.interceptors.request.use(
@@ -24,23 +25,18 @@ axiosInstance.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    const refreshToken = localStorage.getItem("refreshToken");
-    if (
-      error.response.status === 401 &&
-      !originalRequest._retry &&
-      refreshToken
-    ) {
+    if (error.response.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
 
       try {
-        const response = await axios.post(
-          "http:localhost:8080/tokens/renew_access",
+        const response = await axios.get(
+          "http://localhost:8080/api/v1/user/tokens/renew_access",
           {
-            refreshToken,
+            withCredentials: true,
           }
         );
 
-        const newAccessToken = response.data.access_token;
+        const newAccessToken = response.data.accessToken;
 
         localStorage.setItem("accessToken", newAccessToken);
 

@@ -2,13 +2,11 @@ import { ShoppingBag, Trash } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "../ui/sheet";
 import { Link } from "react-router";
 import { buttonVariants } from "../ui/button";
-import { useCart } from "@/hooks/useCart";
+import { useCart } from "@/hooks/use-cart";
 import { ScrollArea } from "../ui/scroll-area";
 
 const SheetCart = () => {
   const { items, removeItem } = useCart();
-
-  console.log(items);
 
   return (
     <Sheet>
@@ -60,7 +58,7 @@ const SheetCart = () => {
 
             <div className="flex items-center justify-center gap-4 px-4 mt-6">
               <Link
-                to={"/giỏ-hàng"}
+                to={"/gio-hang"}
                 className={buttonVariants({
                   variant: "outline",
                   className: "rounded-sm",
@@ -81,7 +79,7 @@ const SheetCart = () => {
                 to={"/gio-hang"}
                 className={buttonVariants({
                   variant: "outline",
-                  className: "rounded-none text-sm gap-2",
+                  className: "text-sm gap-2",
                 })}
                 reloadDocument
               >
@@ -90,7 +88,7 @@ const SheetCart = () => {
               <Link
                 to={"/san-pham"}
                 className={buttonVariants({
-                  className: "rounded-none text-sm gap-2",
+                  className: "text-sm gap-2",
                 })}
                 reloadDocument
               >

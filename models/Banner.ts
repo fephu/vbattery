@@ -15,9 +15,9 @@ const bannerSchema = new Schema({
     type: String,
     required: [true, "Title is required"],
   },
-  position: {
-    type: Number,
-    unique: true,
+  isActive: {
+    type: Boolean,
+    required: [true, "isActive is required"],
   },
   createdAt: {
     type: Date,

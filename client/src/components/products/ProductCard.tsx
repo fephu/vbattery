@@ -2,7 +2,7 @@ import type { Product } from "@/types";
 import { Button } from "../ui/button";
 import { IoIosAdd } from "react-icons/io";
 import { Link } from "react-router";
-import { useCart } from "@/hooks/useCart";
+import { useCart } from "@/hooks/use-cart";
 
 interface ProductCardProps {
   product: Product;
@@ -22,7 +22,7 @@ const ProductCard = ({ product }: ProductCardProps) => {
         <img
           src={product.hinh_anh[0]}
           alt="product img"
-          className="h-2/3 w-full bg-cover"
+          className="h-2/3 w-full bg-cover bg-center"
         />
       </Link>
       <div className="flex flex-col gap-1 py-2 px-2 ">

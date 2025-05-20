@@ -1,10 +1,11 @@
+import { getEquipment } from "@/api/equipment";
 import { fetchAllProducts } from "@/api/product";
-import MaxWidthWrapper from "@/components/MaxWidthWrapper";
 import EquipmentBar from "@/components/products/EquipmentBar";
 import ProductCard from "@/components/products/ProductCard";
 import SearchBar from "@/components/SearchBar";
 import { Button } from "@/components/ui/button";
-import type { PaginateProductType } from "@/types";
+import PublicLayout from "@/layouts/PublicLayout";
+import type { Equipment, PaginateProductType } from "@/types";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Link, useSearchParams } from "react-router";
@@ -30,20 +31,25 @@ const ProductsPage = () => {
   };
 
   return (
-    <MaxWidthWrapper className="py-20">
+    <PublicLayout>
       <div className="text-4xl text-center pt-10">
-        {equip ? `Sản phẩm ${equip}` : "Tất cả sản phẩm"}
+        {data?.products.length !== 0
+          ? `Sản phẩm ${
+              (data && data.products[0].thiet_bi_su_dung[0].ten_thiet_bi) ??
+              "Sản phẩm"
+            }`
+          : "Tất cả sản phẩm"}
       </div>
 
       <div className="grid grid-cols-5 gap-x-10 w-full py-4">
-        <div className="col-span-1">
+        <div className="col-span-1 hidden md:block">
           <SearchBar />
           <EquipmentBar />
         </div>
 
-        <div className="text-center w-full col-span-4 py-2 h-screen flex flex-col justify-between">
+        <div className="text-center w-full col-span-5 md:col-span-4 py-2 h-screen flex flex-col justify-between">
           {data?.products.length !== 0 ? (
-            <div className="grid grid-cols-4 gap-x-4 gap-y-4 pt-8">
+            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-x-4 gap-y-4 pt-8">
               {data?.products.map((pro) => (
                 <ProductCard key={pro.ten_san_pham} product={pro} />
               ))}
@@ -64,7 +70,10 @@ const ProductsPage = () => {
             <div className="flex items-center gap-2">
               {Array.from({ length: (data && data?.total_pages) || 3 }).map(
                 (_, index) => (
-                  <Button variant={page === index + 1 ? "outline" : "ghost"}>
+                  <Button
+                    key={index}
+                    variant={page === index + 1 ? "outline" : "ghost"}
+                  >
                     <Link
                       to={`/san-pham?page=${index + 1}`}
                       key={index}
@@ -85,7 +94,7 @@ const ProductsPage = () => {
           </div>
         </div>
       </div>
-    </MaxWidthWrapper>
+    </PublicLayout>
   );
 };
 

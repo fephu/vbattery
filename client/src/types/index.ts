@@ -1,4 +1,11 @@
+export interface User {
+  id: string;
+  fullName: string;
+  email: string;
+}
+
 export interface Equipment {
+  _id: string;
   ten_thiet_bi: string;
   slug: string;
 }
@@ -27,8 +34,11 @@ export type PaginateProductType = {
 };
 
 export interface Banner {
+  _id: string;
   image_url: string;
   link_url: string;
   title: string;
   position: number;
 }
+
+export type LoginResponseType = {};

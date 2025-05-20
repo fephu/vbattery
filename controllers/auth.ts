@@ -3,9 +3,10 @@ import { asyncHandler } from "../middlewares/async";
 import { User } from "../models/User";
 import { ErrorResponse } from "../utils/errorResponse";
 import { checkPassword, hashPassword } from "../utils/password";
-import { createToken } from "../utils/token";
+import { createToken, verifyToken } from "../utils/token";
 import type { Response } from "express";
-import { token } from "morgan";
+import jwt, { type JwtPayload } from "jsonwebtoken";
+import type { MyJwtPayload } from "../middlewares/auth";
 
 export const register = asyncHandler(async (req, res, next) => {
   const { fullName, email, password } = req.body;
@@ -59,6 +60,38 @@ export const login = asyncHandler(async (req, res, next) => {
   sendTokenResponse(userRe, 200, res, accessToken);
 });
 
+export const renewAccessToken = asyncHandler(async (req, res, next) => {
+  const { refreshToken } = req.cookies;
+
+  if (!refreshToken) {
+    return next(new ErrorResponse("No token provided", 401));
+  }
+
+  const decoded = jwt.verify(
+    refreshToken,
+    process.env.JWT_SECRET as string
+  ) as MyJwtPayload;
+
+  if (!decoded) {
+    return next(new ErrorResponse("Fail token", 404));
+  }
+
+  const accessToken = createToken(
+    decoded.id,
+    process.env.ACCESS_TOKEN_DURATION as ms.StringValue
+  );
+
+  res.status(200).json({ accessToken });
+});
+
+export const fetchCurrentUser = asyncHandler(async (req, res, next) => {
+  const id = req.user?.id;
+
+  const user = await User.findById(id);
+
+  res.status(200).json({ user });
+});
+
 const sendTokenResponse = (
   user: any,
   statusCode: number,
@@ -72,6 +105,10 @@ const sendTokenResponse = (
 
   res
     .status(statusCode)
-    .cookie("refreshToken", refreshToken)
-    .json({ success: true, accessToken, user });
+    .cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+      path: "/",
+    })
+    .json({ accessToken, user });
 };

@@ -1,15 +1,18 @@
 import jwt from "jsonwebtoken";
 import type ms from "ms";
 
-export const createToken = (id: number, duration: ms.StringValue) => {
-  const secret = process.env.JWT_SECRET;
-  if (!secret) {
-    throw new Error("JWT_SECRET is not defined in environment variables");
-  }
-
-  const token = jwt.sign({ id }, secret, {
+export const createToken = (id: string, duration: ms.StringValue) => {
+  const token = jwt.sign({ id }, process.env.JWT_SECRET as string, {
     expiresIn: duration,
   });
 
   return token;
+};
+
+export const verifyToken = (token: string) => {
+  const decoded = jwt.verify(token, process.env.JWT_SECRET as string);
+
+  if (!decoded) return false;
+
+  return decoded;
 };
