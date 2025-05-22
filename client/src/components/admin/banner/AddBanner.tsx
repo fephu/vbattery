@@ -6,47 +6,59 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { IoIosAdd } from "react-icons/io";
 import UploadButton from "../UploadButton";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { routes } from "@/router/AppRouter";
-
-import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useState, type FormEvent } from "react";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { addBanner } from "@/api/banner";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Loader2 } from "lucide-react";
+import { toast } from "sonner";
+import FieldForm from "../FieldForm";
+import CustomSelect from "../CustomSelect";
+import { routes } from "@/router/AppRouter";
 
 const AddBanner = () => {
-  const [imageUrl, setImageUrl] = useState<File | null>(null);
-  const [linkUrl, setLinkUrl] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
-  const [isActive, setIsActive] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState(false);
+  const queryClient = useQueryClient();
 
-  const { mutate } = useMutation({
+  const [formData, setFormData] = useState({
+    link_url: "",
+    title: "",
+    isActive: true,
+    image_url: "",
+  });
+
+  const handleChange = (key: keyof typeof formData, value: string) => {
+    setFormData((prev) => ({ ...prev, [key]: value }));
+  };
+
+  const { mutate, isPending } = useMutation({
     mutationFn: addBanner,
-    onSuccess: (data) => {
-      alert(`Thêm thành công ${data._id}`);
+    onSuccess: () => {
+      setIsOpen(false);
+      queryClient.invalidateQueries({ queryKey: ["banners"] });
+      toast.success(`Thêm thành công banner`);
     },
     onError: (error: any) => {
-      alert(`Thêm thất bại: ${error.response.data.error}`);
+      toast.error(`Thêm thất bại: ${error.response.data.error}`);
     },
   });
 
-  const handleSubmit = () => {
-    mutate({ image_url: imageUrl, isActive, link_url: linkUrl, title });
+  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const form = new FormData();
+    form.append("link_url", formData.link_url);
+    form.append("title", formData.title);
+    form.append("isActive", formData.isActive.toString());
+    form.append("image_url", formData.image_url);
+
+    mutate(form);
   };
 
   return (
-    <Dialog>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <Button className="rounded-sm bg-green-950 cursor-pointer hover:bg-green-900">
           <IoIosAdd className="size-6" />
@@ -64,49 +76,29 @@ const AddBanner = () => {
         </DialogHeader>
         <form onSubmit={handleSubmit} className="grid gap-6 pt-4">
           <div className="grid grid-cols-4 items-center gap-4">
-            <UploadButton handleChangeFile={setImageUrl} />
+            <UploadButton id="image_url" handleChangeFile={handleChange} />
           </div>
 
-          <div className="grid grid-cols-4 items-center gap-4">
+          <div>
             <Label htmlFor="link_url" className="text-right text-base">
               Đường dẫn
             </Label>
-            <div className="col-span-3">
-              <Select onValueChange={setLinkUrl}>
-                <SelectTrigger className="w-full rounded-sm">
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectGroup>
-                    {routes.map((route) => (
-                      <SelectItem key={route.path} value={route.path}>
-                        {route.path}
-                      </SelectItem>
-                    ))}
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
-
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="title" className="text-right text-base">
-              Tiêu đề
-            </Label>
-            <Input
-              id="title"
-              className="col-span-3 rounded-sm"
-              onChange={(e) => setTitle(e.target.value)}
+            <CustomSelect
+              id="link_url"
+              data={routes}
+              getValue={(item) => item.path}
+              getLabel={(item) => item.path}
+              onChange={handleChange}
             />
           </div>
 
-          <div className="grid grid-cols-4 items-center gap-4">
+          <FieldForm id="title" label="Tiêu đề" handleChange={handleChange} />
+
+          <div className="flex items-center gap-4">
             <Label htmlFor="isActive" className="text-right text-base">
               Hiển thị
             </Label>
-            <div className="col-span-3">
-              <Checkbox id="isActive" checked={isActive} />
-            </div>
+            <Checkbox id="isActive" checked={true} />
           </div>
 
           <div className="flex items-center gap-4 justify-end">
@@ -115,7 +107,11 @@ const AddBanner = () => {
               className="bg-green-900 cursor-pointer hover:bg-green-800"
               size={"lg"}
             >
-              <IoIosAdd className="size-5" />
+              {isPending ? (
+                <Loader2 className="animate-spin size-5" />
+              ) : (
+                <IoIosAdd className="size-5" />
+              )}
               Tạo mới
             </Button>
           </div>

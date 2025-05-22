@@ -1,30 +1,23 @@
 import { removeEquipment } from "@/api/equipment";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { useMutation } from "@tanstack/react-query";
-import { IoTrashOutline } from "react-icons/io5";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import AlertDelete from "../AlertDelete";
+import { toast } from "sonner";
 
 interface ActionsProps {
   equipment_id: string;
 }
 
 const Actions = ({ equipment_id }: ActionsProps) => {
+  const queryClient = useQueryClient();
+
   const { mutate } = useMutation({
     mutationFn: removeEquipment,
     onSuccess: (data: any) => {
-      alert(`Xóa thành công ${data._id}`);
+      queryClient.invalidateQueries({ queryKey: ["equipments"] });
+      toast.success(`Xóa thành công thiết bị sử dụng ${data._id}`);
     },
     onError: (error: any) => {
-      alert(`Đăng nhập thất bại: ${error.response.data.error}`);
+      toast.error(`Xóa thất bại: ${error.response.data.error}`);
     },
   });
 
@@ -34,26 +27,7 @@ const Actions = ({ equipment_id }: ActionsProps) => {
 
   return (
     <>
-      <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button variant={"ghost"} className="cursor-pointer">
-            <IoTrashOutline className="size-5" />
-          </Button>
-        </AlertDialogTrigger>
-        <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle>
-              Bạn có chắc chắn xóa {equipment_id}?
-            </AlertDialogTitle>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Hủy</AlertDialogCancel>
-            <AlertDialogAction onClick={handleDeleteBanner}>
-              Tiếp tục
-            </AlertDialogAction>
-          </AlertDialogFooter>
-        </AlertDialogContent>
-      </AlertDialog>
+      <AlertDelete id={equipment_id} handleDeleteBanner={handleDeleteBanner} />
     </>
   );
 };

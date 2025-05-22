@@ -21,8 +21,6 @@ function* loginSaga(action: ReturnType<typeof loginRequest>): Generator {
 function* fetchUserSaga(): Generator {
   try {
     const response = yield call(fetchCurrentUser);
-    console.log(response);
-
     yield put(fetchUserSuccess(response));
   } catch (err: any) {
     yield put(fetchUserFailure("Unable to fetch user"));

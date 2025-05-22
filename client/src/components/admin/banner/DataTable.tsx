@@ -15,7 +15,7 @@ import {
 import Actions from "./Actions";
 import type { Banner } from "@/types";
 
-interface DataTableProps {
+interface DataTableProps<> {
   columns: ColumnDef<Banner>[];
   data: Banner[];
 }
@@ -62,7 +62,7 @@ function DataTable({ columns, data }: DataTableProps) {
                         <img
                           src={cell.getValue() as string}
                           alt="banner img"
-                          className="w-[8rem] rounded-sm"
+                          className="w-[20rem] rounded-sm"
                         />
                       </TableCell>
                     );

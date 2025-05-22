@@ -15,7 +15,7 @@ const productSchema = new Schema({
     type: String,
     required: [true, "Mã sản phẩm là bắt buộc"],
   },
-  diep_ap: {
+  dien_ap: {
     type: String,
     required: [true, "Điệp áp là bắt buộc"],
   },

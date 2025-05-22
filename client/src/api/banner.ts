@@ -19,18 +19,12 @@ export const removeBanner = async (id: string): Promise<Banner> => {
     });
 };
 
-export const addBanner = async (data: {
-  image_url: File | null;
-  link_url: string;
-  title: string;
-  isActive: boolean;
-}): Promise<Banner> => {
+export const addBanner = async (formData: FormData): Promise<Banner> => {
   return axiosInstance
-    .post(`/banners/create`, {
-      image_url: data.image_url,
-      link_url: data.link_url,
-      title: data.title,
-      isActive: data.isActive,
+    .post(`/banners/create`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
     })
     .then((response) => response.data.banner)
     .catch((error) => {

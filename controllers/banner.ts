@@ -1,21 +1,38 @@
 import { asyncHandler } from "../middlewares/async";
 import { Banner } from "../models/Banner";
+import { v2 as cloudinary } from "cloudinary";
+import streamifier from "streamifier";
 
 export const addBanner = asyncHandler(async (req, res, next) => {
-  const { image_url, link_url, title, isActive } = req.body;
+  const { link_url, title, isActive } = req.body;
+  const file = req.file;
 
-  const banner = await Banner.create({
-    image_url,
-    link_url,
-    title,
-    isActive,
-  });
+  if (!file) {
+    return res.status(400).json({ error: "Image is required" });
+  }
 
-  res.status(200).json({ banner });
+  const uploadStream = cloudinary.uploader.upload_stream(
+    { folder: "banners" },
+    async (error, result) => {
+      if (error || !result) {
+        return res.status(500).json({ error });
+      }
+      const banner = await Banner.create({
+        image_url: result.url,
+        isActive,
+        link_url,
+        title,
+      });
+
+      return res.status(200).json({ banner });
+    }
+  );
+
+  streamifier.createReadStream(file.buffer).pipe(uploadStream);
 });
 
 export const getAllBanners = asyncHandler(async (req, res, next) => {
-  const banners = await Banner.find({}).limit(4);
+  const banners = await Banner.find({});
 
   res.status(200).json({ banners });
 });

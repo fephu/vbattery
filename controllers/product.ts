@@ -3,6 +3,8 @@ import { Equipment } from "../models/Equipment";
 import { Product } from "../models/Product";
 import { ErrorResponse } from "../utils/errorResponse";
 import { slugName } from "../utils/slug";
+import { v2 as cloudinary, type UploadApiResponse } from "cloudinary";
+import streamifier from "streamifier";
 
 export const getAllProducts = asyncHandler(async (req, res, next) => {
   const page_size = parseInt(req.query.page_size as string) || 6;
@@ -45,35 +47,54 @@ export const createProduct = asyncHandler(async (req, res, next) => {
   const {
     ten_san_pham,
     ma_san_pham,
-    diep_ap,
+    dien_ap,
     dung_luong,
     kich_thuoc,
     mau_sac,
     trong_luong,
     xuat_xu,
     gia_san_pham,
-    hinh_anh,
     thiet_bi_su_dung,
   } = req.body;
 
-  const sluggedName = slugName(ten_san_pham);
+  const file = req.file;
 
-  const product = await Product.create({
-    ten_san_pham,
-    ma_san_pham,
-    diep_ap,
-    dung_luong,
-    gia_san_pham,
-    hinh_anh,
-    kich_thuoc,
-    mau_sac,
-    slug: sluggedName,
-    trong_luong,
-    xuat_xu,
-    thiet_bi_su_dung,
-  });
+  if (!file) {
+    return res.status(400).json({ error: "Image is required" });
+  }
 
-  res.status(200).json({ success: true, data: product });
+  const uploadStream = cloudinary.uploader.upload_stream(
+    { folder: "products" },
+    async (error, result) => {
+      if (error || !result) {
+        return res.status(500).json({ error });
+      }
+      const images = [];
+
+      images.push(result.url);
+
+      const sluggedName = slugName(ten_san_pham);
+
+      const product = await Product.create({
+        ten_san_pham,
+        ma_san_pham,
+        dien_ap,
+        dung_luong,
+        gia_san_pham,
+        hinh_anh: images,
+        kich_thuoc,
+        mau_sac,
+        slug: sluggedName,
+        trong_luong,
+        xuat_xu,
+        thiet_bi_su_dung,
+      });
+
+      return res.status(200).json({ product });
+    }
+  );
+
+  streamifier.createReadStream(file.buffer).pipe(uploadStream);
 });
 
 export const getProductBySlug = asyncHandler(async (req, res, next) => {
@@ -90,4 +111,12 @@ export const getProductBySlug = asyncHandler(async (req, res, next) => {
   res.status(200).json({
     product,
   });
+});
+
+export const delelteProduct = asyncHandler(async (req, res, next) => {
+  const { id } = req.params;
+
+  const product = await Product.findByIdAndDelete(id);
+
+  res.status(200).json({ product });
 });

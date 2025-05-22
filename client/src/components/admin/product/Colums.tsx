@@ -11,39 +11,14 @@ export const columns: ColumnDef<Product>[] = [
     header: "Mã sản phẩm",
   },
   {
-    accessorKey: "diep_ap",
-    header: "Điện áp",
-  },
-  {
-    accessorKey: "dung_luong",
-    header: "Dung lượng",
-  },
-  {
-    accessorKey: "kich_thuoc",
-    header: "Kích thước",
-  },
-  {
-    accessorKey: "mau_sac",
-    header: "Màu sắc",
-  },
-  {
-    accessorKey: "trong_luong",
-    header: "Trọng lượng",
-  },
-  {
-    accessorKey: "xuat_xu",
-    header: "Xuất xứ",
-  },
-  {
-    accessorKey: "gia_san_pham",
-    header: "Giá sản phẩm",
-  },
-  {
     accessorKey: "hinh_anh",
     header: "Hình ảnh",
   },
   {
-    accessorKey: "thiet_bi_su_dung",
-    header: "Thiết bị sử dụng",
+    accessorKey: "chi_tiet_san_pham",
+    header: "Chi tiết sản phẩm",
+  },
+  {
+    header: "Thao tác",
   },
 ];

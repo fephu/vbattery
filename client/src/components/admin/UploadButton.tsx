@@ -2,10 +2,11 @@ import { useRef, useState, type ChangeEvent } from "react";
 import { Button } from "../ui/button";
 
 interface UploadButtonProps {
-  handleChangeFile: (file: File) => void;
+  id: string;
+  handleChangeFile: (key: any, value: any) => void;
 }
 
-const UploadButton = ({ handleChangeFile }: UploadButtonProps) => {
+const UploadButton = ({ handleChangeFile, id }: UploadButtonProps) => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>("");
 
@@ -19,11 +20,11 @@ const UploadButton = ({ handleChangeFile }: UploadButtonProps) => {
 
     const url = URL.createObjectURL(file);
     setPreviewUrl(url);
-    handleChangeFile(file);
+    handleChangeFile(id, file);
   };
 
   return (
-    <>
+    <div className="flex flex-col md:flex-row gap-4">
       {previewUrl ? (
         <Button
           type="button"
@@ -35,7 +36,7 @@ const UploadButton = ({ handleChangeFile }: UploadButtonProps) => {
         </Button>
       ) : (
         <Button type="button" onClick={handleClick} size={"sm"}>
-          Chọn hình ảnh
+          Chọn ảnh
         </Button>
       )}
       <input
@@ -55,7 +56,7 @@ const UploadButton = ({ handleChangeFile }: UploadButtonProps) => {
           />
         </div>
       )}
-    </>
+    </div>
   );
 };
 

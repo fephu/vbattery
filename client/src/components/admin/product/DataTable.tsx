@@ -13,6 +13,8 @@ import {
   TableRow,
 } from "../../ui/table";
 import type { Product } from "@/types";
+import Actions from "./Actions";
+import CustomPopover from "../CustomPopover";
 
 interface DataTableProps {
   columns: ColumnDef<Product>[];
@@ -63,6 +65,46 @@ function DataTable({ columns, data }: DataTableProps) {
                           alt="banner img"
                           className="w-[8rem] rounded-sm"
                         />
+                      </TableCell>
+                    );
+                  }
+
+                  if (cell.column.id === "Thao tác") {
+                    return (
+                      <TableCell key={cell.id}>
+                        <Actions product_id={row.original._id} />
+                      </TableCell>
+                    );
+                  }
+
+                  if (cell.column.id === "chi_tiet_san_pham") {
+                    return (
+                      <TableCell key={cell.id}>
+                        <CustomPopover>
+                          <div className="flex flex-col gap-2">
+                            <div className="flex items-center text-sm">
+                              Điện áp: {row.original.diep_ap}
+                            </div>
+                            <div className="flex items-center text-sm">
+                              Dung lượng: {row.original.dung_luong}
+                            </div>
+                            <div className="flex items-center gap-1 text-sm">
+                              Giá sản phẩm: {row.original.gia_san_pham}
+                            </div>
+                            <div className="flex items-center text-sm">
+                              Kích thước: {row.original.kich_thuoc}
+                            </div>
+                            <div className="flex items-center text-sm">
+                              Màu sắc: {row.original.mau_sac}
+                            </div>
+                            <div className="flex items-center text-sm">
+                              Trọng lượng: {row.original.trong_luong}
+                            </div>
+                            <div className="flex items-center text-sm">
+                              Xuất xứ: {row.original.xuat_xu}
+                            </div>
+                          </div>
+                        </CustomPopover>
                       </TableCell>
                     );
                   }

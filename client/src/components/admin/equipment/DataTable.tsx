@@ -14,6 +14,7 @@ import {
 } from "../../ui/table";
 import type { Equipment } from "@/types";
 import Actions from "./Actions";
+import { useState } from "react";
 
 interface DataTableProps {
   columns: ColumnDef<Equipment>[];
@@ -21,10 +22,18 @@ interface DataTableProps {
 }
 
 function DataTable({ columns, data }: DataTableProps) {
+  const [rowSelection, setRowSelection] = useState({});
+
+  console.log(rowSelection);
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    onRowSelectionChange: setRowSelection,
+    state: {
+      rowSelection,
+    },
   });
 
   return (

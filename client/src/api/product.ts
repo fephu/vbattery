@@ -21,3 +21,25 @@ export const getProduct = async (slug: string): Promise<Product> => {
       throw error;
     });
 };
+
+export const deleteProduct = async (id: string): Promise<Product> => {
+  return axiosInstance
+    .delete(`/products/${id}`)
+    .then((response) => response.data.product)
+    .catch((error) => {
+      throw error;
+    });
+};
+
+export const addProduct = async (formData: FormData): Promise<Product> => {
+  return axiosInstance
+    .post(`/products/create`, formData, {
+      headers: {
+        "Content-Type": "multipart/form-data",
+      },
+    })
+    .then((response) => response.data.banner)
+    .catch((error) => {
+      throw error;
+    });
+};

@@ -10,20 +10,23 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import type { Equipment } from "@/types";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import { IoIosAdd } from "react-icons/io";
+import { toast } from "sonner";
 
 const AddEquipment = () => {
+  const queryClient = useQueryClient();
   const [equipment, setEquipment] = useState<string>("");
 
   const { mutate } = useMutation({
     mutationFn: createEquipment,
     onSuccess: (data: Equipment) => {
-      alert(`Thêm thành công ${data._id}`);
+      queryClient.invalidateQueries({ queryKey: ["equipments"] });
+      toast.success(`Thêm thành công thiết bị sử dụng ${data._id}`);
     },
     onError: (error: any) => {
-      alert(`Thêm thất bại: ${error.response.data.error}`);
+      toast.error(`Xóa thất bại: ${error.response.data.error}`);
     },
   });
 
@@ -49,8 +52,11 @@ const AddEquipment = () => {
           </DialogTitle>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="grid gap-6 mt-8">
-          <div className="grid grid-cols-4 items-center gap-4">
-            <Label htmlFor="ten_thiet_bi" className="text-right text-base">
+          <div>
+            <Label
+              htmlFor="ten_thiet_bi"
+              className="text-right text-sm md:text-base tracking-tight"
+            >
               Tên thiết bị
             </Label>
             <Input

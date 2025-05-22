@@ -10,6 +10,8 @@ import { equipmentRouter } from "./routes/equipment";
 import cookieParser from "cookie-parser";
 import { bannerRouter } from "./routes/banner";
 
+import bodyParser from "body-parser";
+
 dotenv.config({ path: "./config/config.env" });
 
 connectToDB();
@@ -24,6 +26,7 @@ app.use(
     credentials: true,
   })
 );
+app.use(bodyParser.urlencoded({ extended: true }));
 app.disable("etag");
 app.use(express.json());
 app.use(cookieParser());
