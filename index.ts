@@ -9,6 +9,7 @@ import { authRouter } from "./routes/auth";
 import { equipmentRouter } from "./routes/equipment";
 import cookieParser from "cookie-parser";
 import { bannerRouter } from "./routes/banner";
+import { v2 as cloudinary } from "cloudinary";
 
 import bodyParser from "body-parser";
 
@@ -17,6 +18,12 @@ dotenv.config({ path: "./config/config.env" });
 connectToDB();
 
 const app = express();
+
+cloudinary.config({
+  cloud_name: process.env.CLOULDIARY_CLOUD_NAME,
+  api_key: process.env.CLOULDIARY_API_KEY,
+  api_secret: process.env.CLOULDIARY_API_SECRET,
+});
 
 app.use(
   cors({
